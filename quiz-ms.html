@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ms" dir="ltr">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kuiz Interaktif</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+    options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] }
+  };
+</script>
+<style>
+:root{ --bg:#0b1220; --panel:#111a2e; --text:#e5e7eb; --muted:#aab3c5; --primary:#6366f1; --primary2:#22c55e; --border:rgba(255,255,255,0.1); --radius:16px; --app-font:"Noto Sans", "Segoe UI", Tahoma, Arial, sans-serif; }
+body{ margin:0; font-family:var(--app-font); background:var(--bg); color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:20px; box-sizing:border-box; }
+button,input,table,th,td,label,h1,h2,h3,p,div{ font-family:var(--app-font); }
+.card{ background:var(--panel); width:100%; max-width:600px; border-radius:var(--radius); padding:24px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border:1px solid var(--border); }
+h1{ margin:0 0 10px; font-size:22px; text-align:center; } .desc{ color:var(--muted); font-size:13px; margin-bottom:20px; text-align:center; line-height:1.5; }
+.reviewBox{ margin-top:20px; border-top:1px solid var(--border); padding-top:18px; }
+.reviewItem{ border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:12px; background:rgba(255,255,255,0.04); }
+.badge{ display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; font-weight:800; margin-bottom:8px; }
+.badge.ok{ background:rgba(34,197,94,.16); color:var(--primary2); }
+.badge.no{ background:rgba(239,68,68,.16); color:#ef4444; }
+.reviewMeta{ font-size:13px; line-height:1.55; color:var(--text); }
+.reviewMeta b{ color:var(--muted); }
+label{ font-size:10px; text-transform:uppercase; font-weight:bold; color:var(--muted); margin-bottom:4px; display:block; }
+input{ width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:var(--text); margin-bottom:15px; box-sizing:border-box; outline:none; }
+.btn{ background:var(--primary); color:#fff; border:none; padding:12px 20px; border-radius:10px; cursor:pointer; font-weight:700; width:100%; transition:0.2s; }
+.btn:hover{ filter:brightness(1.1); }
+.btn-back{ background:linear-gradient(135deg, var(--primary), var(--primary2)); color:#fff; border:1px solid rgba(255,255,255,.35); box-shadow:0 0 0 3px rgba(255,255,255,.10), 0 8px 22px rgba(0,0,0,.25); }
+.btn-back:hover{ filter:brightness(1.18); box-shadow:0 0 0 4px rgba(255,255,255,.14), 0 10px 26px rgba(0,0,0,.30); }
+.opt{ display:block; padding:14px; border:1px solid var(--border); border-radius:10px; margin-bottom:10px; cursor:pointer; transition:0.2s; }
+.opt:hover{ background:rgba(255,255,255,0.05); } .opt.active{ border-color:var(--primary); background:rgba(99,102,241,0.1); }
+.bar{ height:6px; background:rgba(255,255,255,0.05); border-radius:3px; margin-bottom:20px; overflow:hidden; }
+.fill{ height:100%; background:var(--primary); transition:width 0.3s; }
+table{ width:100%; border-collapse:collapse; margin-top:15px; font-size:12px; }
+th, td{ text-align:left; padding:8px; border-bottom:1px solid var(--border); }
+${dir==='rtl'?'th, td{text-align:right;}':''}
+</style>
+</head>
+<body>
+<div class="card" id="app"></div>
+<script>
+const DATA = {"title":"Kuiz Interaktif","desc":"Jawab semua soalan dan semak maklum balas di akhir kuiz.","lang":"ms","randQ":true,"randA":true,"saveData":false,"classLbl":"No Matrik","sheetUrl":"","hasReference":false,"questions":[{"q":"Apakah tujuan utama penilaian formatif dijalankan semasa proses pembelajaran?","choices":["Untuk memberikan gred akhir bagi menentukan kedudukan pelajar dalam kelas.","Untuk memodifikasi aktiviti pengajaran dan pembelajaran bagi meningkatkan pencapaian pelajar.","Untuk merekodkan markah dalam rekod akademik rasmi bagi tujuan kemasukan kolej.","Untuk mengukur kejayaan keseluruhan program pendidikan setelah ia selesai sepenuhnya."],"answerIndex":1,"explain":""},{"q":"Berdasarkan teks, manakah antara berikut merupakan ciri maklum balas deskriptif yang berkesan?","choices":["Memberikan gred huruf seperti 'A' atau 'B' pada setiap tugasan.","Memberikan pujian umum seperti 'kerja yang bagus' atau meletakkan pelekat.","Memberikan input spesifik tentang cara untuk mencapai langkah seterusnya dalam kemajuan pembelajaran.","Mengumumkan skor ujian di hadapan rakan sekelas untuk memotivasikan pelajar."],"answerIndex":2,"explain":""},{"q":"Penilaian sumatif sering dianggap sebagai penilaian terhadap 'produk'. Apakah yang dimaksudkan dengan 'produk' dalam konteks ini?","choices":["Bahan bantu mengajar yang dicipta oleh guru untuk sesi kelas.","Hasil akhir atau pencapaian keseluruhan pelajar pada akhir tempoh instruksional.","Interaksi harian antara pelajar dan guru semasa perbincangan kelas.","Latihan kerja rumah yang diberikan untuk pengukuhan harian."],"answerIndex":1,"explain":""},{"q":"Apakah peranan utama 'rubrik' dalam meningkatkan proses penilaian menurut cadangan dalam kertas kerja tersebut?","choices":["Untuk mengehadkan kreativiti pelajar dalam menyiapkan tugasan.","Untuk menyenaraikan kriteria prestasi yang dijangkakan bagi pelbagai gred.","Untuk menggantikan keperluan guru memberikan maklum balas lisan.","Untuk memastikan semua pelajar mendapat gred yang sama tanpa mengira usaha."],"answerIndex":1,"explain":""},{"q":"Antara berikut, yang manakah merupakan contoh penilaian sumatif?","choices":["Soalan 'clicker' semasa kuliah berlangsung.","Perbincangan dalam kelas.","Peperiksaan akhir semester.","Tugasan penulisan refleksi satu minit."],"answerIndex":2,"explain":""},{"q":"Mengapakah penilaian formatif dianggap mempunyai fungsi 'remedial' (pemulihan)?","choices":["Kerana ia hanya diberikan kepada pelajar yang telah gagal dalam peperiksaan sumatif.","Kerana ia membolehkan guru dan pelajar mengenal pasti serta membetulkan kesukaran pembelajaran dengan segera.","Kerana ia bertujuan untuk mengulang seluruh silibus di akhir tahun.","Kerana ia mengurangkan beban kerja guru dalam menyediakan rancangan pengajaran."],"answerIndex":1,"explain":""},{"q":"Bagaimanakah penilaian sumatif boleh membantu pihak pentadbir sekolah?","choices":["Dengan memantau kehadiran harian pelajar di dalam kelas.","Dengan memberikan input untuk menambah baik perancangan kurikulum jika terdapat jurang pembelajaran yang konsisten.","Dengan menentukan jenis makanan yang patut disediakan di kantin sekolah.","Dengan menyediakan platform untuk pelajar mengadu tentang rakan sekelas mereka."],"answerIndex":1,"explain":""},{"q":"Kertas kerja tersebut menyatakan bahawa penilaian formatif adalah sebahagian daripada 'pedagogi'. Apakah implikasi pernyataan ini?","choices":["Penilaian formatif harus dilakukan oleh pihak luar sekolah sahaja.","Ia tidak boleh dipisahkan daripada proses instruksional atau pengajaran itu sendiri.","Ia hanya perlu dilakukan jika guru mempunyai masa terluang selepas menghabiskan sukatan pelajaran.","Penilaian tersebut tidak memerlukan sebarang perancangan awal oleh guru."],"answerIndex":1,"explain":""},{"q":"Mengapakah 'penggredan buta' (blind grading) dicadangkan untuk penilaian sumatif?","choices":["Untuk memastikan guru tidak perlu membaca nama pelajar semasa menggred.","Untuk memberikan penilaian yang benar-benar tidak berat sebelah dan objektif.","Untuk mempercepatkan proses penggredan tugasan yang panjang.","Untuk mengelakkan guru daripada memberikan maklum balas yang terlalu terperinci."],"answerIndex":1,"explain":""},{"q":"Apakah kepentingan 'persidangan yang dipimpin oleh pelajar' (student-led conferences) menurut teks?","choices":["Ia membolehkan guru berehat sementara pelajar bercakap dengan ibu bapa.","Ia merupakan strategi penilaian formatif di mana pelajar terlibat secara aktif dalam menjelaskan pembelajaran mereka.","Ia bertujuan untuk menggantikan peperiksaan sumatif di akhir tahun.","Ia digunakan untuk menentukan pelajar mana yang akan mendapat anugerah kecemerlangan."],"answerIndex":1,"explain":""}]}; 
+const UI = {"name":"Nama Penuh","class":"No Matrik","start":"Mula Kuiz","next":"Seterusnya","back":"Kembali","finish":"Tamat","retake":"Ulang Kuiz","rank":"Kedudukan 10 Teratas","saving":"Menyimpan data...","result":"Keputusan","q":"S","tableName":"Nama","tableClass":"No Matrik","percent":"%","alertInfo":"Sila isi maklumat.","alertChoose":"Sila pilih jawapan.","review":"Semakan Jawapan","questionLabel":"Soalan","answerLabel":"Jawapan","explanationLabel":"Penerangan","correct":"Betul","incorrect":"Tidak betul","feedbackCorrect":"Jawapan betul, tiada ulasan.","feedbackWrong":"Jawapan belum menepati konsep utama.","noRefNote":"Tiada rujukan dimuat naik."};
+let state = { mode:'login', idx:0, ans:[], name:'', class:'', qs:[], loading:false, ranking:[] };
+function esc(v){ return String(v ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function buildReview(){
+  return '<div class="reviewBox"><h3 style="text-align:center; margin:0 0 12px;">' + UI.review + '</h3>' +
+    state.qs.map((q,i) => {
+      const picked = state.ans[i];
+      const ok = picked === q.answerIndex;
+      const userAns = picked === null || picked === undefined ? '-' : q.choices[picked];
+      const fb = ok ? UI.feedbackCorrect : (q.explain ? q.explain : (UI.feedbackWrong + (!DATA.hasReference ? " " + UI.noRefNote : "")));
+      return '<div class="reviewItem">' +
+        '<span class="badge ' + (ok ? 'ok' : 'no') + '">' + (ok ? UI.correct : UI.incorrect) + '</span>' +
+        '<div class="reviewMeta"><b>' + UI.questionLabel + ':</b> ' + esc(q.q) + '</div>' +
+        '<div class="reviewMeta"><b>' + UI.answerLabel + ':</b> ' + esc(userAns) + '</div>' +
+        '<div class="reviewMeta"><b>' + UI.explanationLabel + ':</b> ' + esc(fb) + '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+}
+
+function render(){
+  const app = document.getElementById('app');
+  if(state.mode==='login'){
+    app.innerHTML = '<h1>' + DATA.title + '</h1><p class="desc">' + DATA.desc + '</p>' +
+      '<label>' + UI.name + '</label><input type="text" id="u_name" value="' + state.name + '">' +
+      '<label>' + UI.class + '</label><input type="text" id="u_class" value="' + state.class + '">' +
+      '<button class="btn" onclick="start()">' + UI.start + '</button>';
+  } else if(state.mode==='quiz'){
+    const q = state.qs[state.idx];
+    const backBtn = state.idx > 0 ? '<button class="btn btn-back" style="margin-top:10px;" onclick="back()">' + UI.back + '</button>' : '';
+    const finishBtn = state.idx === state.qs.length - 1 ? '<button class="btn" style="margin-top:10px;" onclick="next()">' + UI.finish + '</button>' : '';
+    app.innerHTML = '<div class="bar"><div class="fill" style="width:' + ((state.idx)/state.qs.length)*100 + '%"></div></div>' +
+      '<div style="font-size:11px; color:var(--muted); margin-bottom:10px;">' + UI.q + ' ' + (state.idx+1) + ' / ' + state.qs.length + '</div>' +
+      '<h2 style="font-size:17px; margin-bottom:20px;">' + q.q + '</h2>' +
+      q.choices.map((c,i) => '<div class="opt ' + (state.ans[state.idx]===i?'active':'') + '" onclick="setAns(' + i + ')">' + c + '</div>').join('') +
+      finishBtn + backBtn;
+  } else if(state.mode==='result'){
+    let score = state.ans.reduce((acc, a, i) => acc + (a === state.qs[i].answerIndex ? 1 : 0), 0);
+    let pct = Math.round((score/state.qs.length)*100);
+    let html = '<h1>' + UI.result + '</h1><div style="font-size:48px; font-weight:900; color:var(--primary2);">' + pct + '% (' + score + '/' + state.qs.length + ')</div>';
+    html += buildReview();
+    if(DATA.saveData){
+      html += '<div style="margin-top:20px; border-top:1px solid var(--border); padding-top:20px;"><h3 style="text-align:center;">' + UI.rank + '</h3>';
+      if(state.loading) html += '<p>' + UI.saving + '</p>';
+      else if(state.ranking.length > 0) {
+        html += '<table><tr><th>#</th><th>' + UI.tableName + '</th><th>' + UI.tableClass + '</th><th>' + UI.percent + '</th></tr>' + 
+          state.ranking.map((r,i) => '<tr><td>' + (i+1) + '</td><td>' + esc(r.name) + '</td><td>' + esc(r.class) + '</td><td>' + esc(r.percent) + '</td></tr>').join('') + '</table>';
+      }
+      html += '</div>';
+    }
+    html += '<button class="btn" style="margin-top:20px;" onclick="location.reload()">' + UI.retake + '</button>';
+    app.innerHTML = html;
+  }
+  if (window.MathJax && window.MathJax.typeset) window.MathJax.typeset();
+}
+function start(){
+  state.name = document.getElementById('u_name').value.trim(); 
+  state.class = document.getElementById('u_class').value.trim();
+  if(!state.name || !state.class) return alert(UI.alertInfo);
+  state.qs = JSON.parse(JSON.stringify(DATA.questions));
+  if(DATA.randQ) state.qs.sort(() => Math.random()-0.5);
+  if(DATA.randA) state.qs.forEach(q => {
+    let orig = q.choices[q.answerIndex];
+    q.choices.sort(() => Math.random()-0.5);
+    q.answerIndex = q.choices.indexOf(orig);
+  });
+  state.ans = new Array(state.qs.length).fill(null);
+  state.mode = 'quiz'; render();
+}
+function setAns(i){ state.ans[state.idx] = i; if(state.idx < state.qs.length - 1){ state.idx++; } render(); }
+function back(){ if(state.idx > 0){ state.idx--; render(); } }
+function next(){
+  if(state.ans[state.idx]===null) return alert(UI.alertChoose);
+  if(state.idx < state.qs.length - 1){ state.idx++; render(); }
+  else { finish(); }
+}
+async function finish(){
+  state.mode = 'result'; render();
+  if(DATA.saveData && DATA.sheetUrl){
+    state.loading = true; render();
+    let score = state.ans.reduce((acc, a, i) => acc + (a === state.qs[i].answerIndex ? 1 : 0), 0);
+    let pct = Math.round((score/state.qs.length)*100);
+    try {
+      await fetch(DATA.sheetUrl, { method:'POST', body: JSON.stringify({name:state.name, class:state.class, score:score, percent:pct}), mode:'no-cors' });
+      setTimeout(async () => {
+        try { const res = await fetch(DATA.sheetUrl); state.ranking = await res.json(); render(); } catch(e){}
+        state.loading = false; render();
+      }, 1500);
+    } catch(e){ state.loading = false; render(); }
+  }
+}
+render();
+</script>
+</body></html>
